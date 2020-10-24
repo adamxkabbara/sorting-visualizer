@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./index.js"></script>
+</head>
+<body>
+    <div id="controls">
+        <button id="resetArrayBtn">New Set</button>
+        <form id="sortForm">
+            <input type="radio" id="bubbleSortBtn" name="sortingAlgorithm" value="bubble" checked>
+            <label for="bubbleSortBtn">Bubble Sort</label>
+            <input type="radio" id="mergeSortBtn" name="sortingAlgorithm" value="merge">
+            <label for="mergeSortBtn">Merge Sort</label>
+            <input type="radio" id="heapSortBtn" name="sortingAlgorithm" value="heap">
+            <label for="heapSortBtn">Heap Sort</label>
+            <input type="radio" id="quickSortBtn" name="sortingAlgorithm" value="quick">
+            <label for="quickSortBtn">Quick Sort</label>
+            
+            <input type="submit" value="Start Sorting!">
+        </form>
+    </div>
+    <div>
+        <svg id="sortingContainer" transform="scale(1,-1)" width='1200' height='600'></svg>
+    </div>
+</body>
+</html>
