@@ -1,21 +1,17 @@
 import {animateColor, animateSize} from '../utils.js';
 
-export function quickSortAnimation(array, speed) {
-    let finalAnimation = quickSort(array);    
+export function mergeSortAnimation(array, speed) {
+    let finalAnimation = getMergeSortAnimations(array);    
     let nodes = document.getElementById('sortingContainer').childNodes;
     let size = finalAnimation.length;
     let iteration = 0;
     let sync = 0;
-
+console.log(finalAnimation);
     while(iteration < size) {
  
         setTimeout((iteration) => {
 
             switch (finalAnimation[iteration].op) {
-                case 'pivot-async':
-                    animateColor(nodes[finalAnimation[iteration].first], 'orange');
-
-                    break;
                 case 'one-green':
                     animateColor(nodes[finalAnimation[iteration].first], 'green');
 
@@ -70,141 +66,107 @@ export function quickSortAnimation(array, speed) {
     }
 }
 
-function quickSort(array) {
+function getMergeSortAnimations(array) {
     let animationQueue = [];
 
-    quickSortHelper(array, 0, array.length-1, animationQueue);
+    mergeSort(array, 0, array.length - 1, animationQueue);
 
     localStorage.setItem('sortArray', JSON.stringify(array));
-
+    console.log(array);
     return animationQueue;
 }
 
-function quickSortHelper(array, start, end, animationQueue) {
-    if (start == end) {
-        animationQueue.push({
-            op: 'final',
-            first: start,
-        });
+function merge(array, l, m, r, animationQueue) {
+    let n1 = m - l + 1;
+    let n2 = r - m;
+
+    let left = [];
+    let right = [];
+
+    let i = 0;
+    let j = 0;
+    let k = l;
+
+    for (i = 0; i < n1; i++) {
+        left[i] = {
+            index: l + i,
+            value: array[l + i],
+        };
     }
-    if (start < end) {
-        let pIndex = partition(array, start, end, animationQueue);
-
-        quickSortHelper(array, start, pIndex-1, animationQueue);
-        quickSortHelper(array, pIndex, end, animationQueue);
+    for (j = 0; j < n2; j++) {
+        right[j] = {
+            index: m + j + 1,
+            value: array[m + j + 1],
+        };
     }
-}
 
-function partition(array, lo, hi, animationQueue) {
-    let pivotIndex = Math.floor((hi + lo) / 2)
-    let pivot = array[pivotIndex];
-    let i = lo;
-    let j = hi;
+    i = 0;
+    j = 0;
 
-    // async
-    animationQueue.push({
-        op: 'pivot-async',
-        first: pivotIndex,
-    }); 
-
-    while(i <= j) {
+    while (i < n1 && j < n2) {
         animationQueue.push({
             op: 'two-green',
-            first: i,
-            second: j,
+            first: left[i].index,
+            second: right[j].index,
         });
-        while (array[i] < pivot) {
-            //async
-            animationQueue.push({
-                op: 'one-default-async',
-                first: i,
-            });
-            i++;
-            animationQueue.push({
-                op: 'one-green',
-                first: i,
-            });
-        }
-        while (array[j] > pivot) {
-            //async
-            animationQueue.push({
-                op: 'one-default-async',
-                first: j,
-            });  
-            j--;
-            animationQueue.push({
-                op: 'one-green',
-                first: j,
-            });
-        }
-
-        if (i < j) {
+        if (left[i].value > right[j].value) {
             animationQueue.push({
                 op: 'preSwap',
-                first: i,
-                second: j,
+                first: left[i].index,
+                second: right[j].index,
             });
             animationQueue.push({
                 op: 'swap',
-                first: i,
-                second: j,
+                first: left[i].index,
+                second: right[j].index,
             });
             animationQueue.push({
                 op: 'postSwap',
-                first: i,
-                second: j,
+                first: left[i].index,
+                second: right[j].index,
             });
 
             //async
             animationQueue.push({
                 op: 'two-default-async',
-                first: i,
-                second: j,
+                first: left[i].index,
+                second: right[j].index,
             });
 
-            if (i === pivotIndex) {
-                pivotIndex = j;
-            }
-            else if (j === pivotIndex) {
-                pivotIndex = i;
-            }
-            // async
-            animationQueue.push({
-                op: 'pivot-async',
-                first: pivotIndex,
-            }); 
-
-            // Swap
-            let temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-
-            i++;
-            j--;
-        }
-        else if (i === j) {
-            //async
-            animationQueue.push({
-                op: 'two-default-async',
-                first: i,
-                second: j,
-            });
-            i++;
-            j--;
+            array[k] = right[j].value;
+            j++;
         }
         else {
             //async
             animationQueue.push({
                 op: 'two-default-async',
-                first: i,
-                second: j,
+                first: left[i].index,
+                second: right[j].index,
             });
+            array[k] = left[i].value;
+            i++;
         }
+        k++;
     }
-    //async
-    animationQueue.push({
-        op: 'one-default-async',
-        first: pivotIndex,
-    });
-    return i;
+
+    while (i < n1) {
+        array[k] = left[i].value;
+        k++;
+        i++;
+    }
+    while (j < n2) {
+        array[k] = right[j].value;
+        k++;
+        j++;
+    }
+}
+
+function mergeSort(array, l, r, animationQueue) {
+    if (l >= r) return;
+
+    let m = Math.floor(l + (r - l) / 2);
+
+    mergeSort(array, l, m, animationQueue);
+    mergeSort(array, m + 1, r, animationQueue);
+    merge(array, l, m, r, animationQueue);
 }
