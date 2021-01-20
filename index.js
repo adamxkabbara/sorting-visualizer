@@ -25,19 +25,23 @@ function generateRandomIntegers(size, min, max) {
 }
 
 function resetArray() {
-    let array = generateRandomIntegers(10, 5, 600);
-    array = [50, 10, 60, 70, 5, 20, 40, 30, 80, 90]
+    let array = generateRandomIntegers(100, 5, 600);
+
     localStorage.setItem('sortArray', JSON.stringify(array));
 
-    let barWidth = 5;    // size if the width of the bar
+    let barWidth = 7;    // size if the width of the bar
+    let spaceBetweenBars = 2;
     let xPos = 0;
+    let totalWidth = array.length * (barWidth + spaceBetweenBars);
 
     let sortingContainer = document.getElementById('sortingContainer');
     if (sortingContainer.innerHTML == '') {
         array.forEach((el) => {
             sortingContainer.innerHTML += `<rect x=${xPos} height=${el} width=${barWidth} style='fill:black;' />`;
-            xPos+=(barWidth+2);     // position each bar 2px from each other bar
+            xPos+=(barWidth+spaceBetweenBars);     // position each bar 2px from each other bar
         });
+
+        sortingContainer.setAttribute('width', totalWidth);
     }
     else {
         let nodes = sortingContainer.childNodes;
@@ -55,7 +59,7 @@ function sort() {
     let algorithm = formData.get('sortingAlgorithm');
     let sortArray = JSON.parse(localStorage.getItem('sortArray'));
     let nodes = document.getElementById('sortingContainer').childNodes;
-    let animationSpeed = 2000;
+    let animationSpeed = 5;
 
     nodes.forEach((node) => {
         animateColor(node, 'black');

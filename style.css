@@ -1,5 +1,45 @@
-rect {
+* {
+    margin: 0px;
+    font-size: large;
+    font-family: monospace;
+}
+
+form {
     display: inline-block;
-    margin-left: 2px;
-    background-color: black;
+}
+
+button, input[type=submit] {
+    padding: 10px;
+    border-style: none;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    background-color: #eeeeee;
+}
+
+button:hover, input[type=submit]:hover {
+    background-color: #bdbdbd;
+}
+
+label {
+    cursor: pointer;
+}
+
+label:hover {
+    color: #424242;
+}
+
+.center {
+    display: block;
+    margin: auto;
+}
+
+#resetArrayBtn {
+    display: inline-block;
+}
+
+#controls {
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    background-color: #81d4fa;
 }

@@ -11,20 +11,28 @@
     <div id="controls">
         <button id="resetArrayBtn">New Set</button>
         <form id="sortForm">
-            <input type="radio" id="bubbleSortBtn" name="sortingAlgorithm" value="bubble" checked>
-            <label for="bubbleSortBtn">Bubble Sort</label>
-            <input type="radio" id="mergeSortBtn" name="sortingAlgorithm" value="merge">
-            <label for="mergeSortBtn">Merge Sort</label>
-            <input type="radio" id="heapSortBtn" name="sortingAlgorithm" value="heap">
-            <label for="heapSortBtn">Heap Sort</label>
-            <input type="radio" id="quickSortBtn" name="sortingAlgorithm" value="quick">
-            <label for="quickSortBtn">Quick Sort</label>
+            <label for="bubbleSortBtn">
+                <input type="radio" id="bubbleSortBtn" name="sortingAlgorithm" value="bubble" checked>
+                Bubble Sort
+            </label>
+            <label for="mergeSortBtn">
+                <input type="radio" id="mergeSortBtn" name="sortingAlgorithm" value="merge">
+                Merge Sort
+            </label>
+            <label for="heapSortBtn">
+                <input type="radio" id="heapSortBtn" name="sortingAlgorithm" value="heap">
+                Heap Sort
+            </label>
+            <label for="quickSortBtn">
+                <input type="radio" id="quickSortBtn" name="sortingAlgorithm" value="quick">
+                Quick Sort
+            </label>
             
             <input type="submit" value="Start Sorting!">
         </form>
     </div>
     <div>
-        <svg id="sortingContainer" transform="scale(1,-1)" width='1200' height='600'></svg>
+        <svg id="sortingContainer" class="center" transform="scale(1,1)" width='1200' height='600'></svg>
     </div>
 </body>
 </html>
