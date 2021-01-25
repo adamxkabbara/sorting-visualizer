@@ -5,9 +5,24 @@ import {animateColor} from './utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    resetArray();
+    let defaultSize = 100;
 
-    document.getElementById('resetArrayBtn').addEventListener('click', resetArray);
+    resetArray(defaultSize);
+
+    let arraySizeSpeed = document.getElementById('arraySizeSpeed');
+    arraySizeSpeed.addEventListener('input', (e) => {
+        let value = document.getElementById('arraySizeSpeed').value;
+
+        if (value < 6) {
+            value = 6;
+        }
+        if (value > 100) {
+            value = 100;
+        }
+        resetArray(value);
+    })
+
+    document.getElementById('resetArrayBtn').addEventListener('click', () => {resetArray(document.getElementById('arraySizeSpeed').value)});
     document.getElementById('sortForm').addEventListener('submit', (e) => {
         e.preventDefault();
         sort();
@@ -24,8 +39,8 @@ function generateRandomIntegers(size, min, max) {
     return resultArray;
 }
 
-function resetArray() {
-    let array = generateRandomIntegers(100, 5, 600);
+function resetArray(size) {
+    let array = generateRandomIntegers(size, 5, 600);
 
     localStorage.setItem('sortArray', JSON.stringify(array));
 
@@ -35,7 +50,11 @@ function resetArray() {
     let totalWidth = array.length * (barWidth + spaceBetweenBars);
 
     let sortingContainer = document.getElementById('sortingContainer');
-    if (sortingContainer.innerHTML == '') {
+    let nodes = sortingContainer.childNodes;
+
+    if (nodes.length != size) {
+        sortingContainer.innerHTML = '';
+
         array.forEach((el) => {
             sortingContainer.innerHTML += `<rect x=${xPos} height=${el} width=${barWidth} style='fill:black;' />`;
             xPos+=(barWidth+spaceBetweenBars);     // position each bar 2px from each other bar
@@ -44,8 +63,6 @@ function resetArray() {
         sortingContainer.setAttribute('width', totalWidth);
     }
     else {
-        let nodes = sortingContainer.childNodes;
-
         for (let index = 0; index < nodes.length; index++) {
             nodes[index].setAttribute('height', array[index]);
             nodes[index].style = 'fill:black';
